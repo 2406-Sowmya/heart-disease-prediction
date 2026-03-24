@@ -1,21 +1,10 @@
+from fusion_module.utils.shared_memory import SharedMemory
+
+
 class DummyFusion:
-    """
-    Simple rule-based fusion logic
-    """
-
-    def __init__(self):
-        pass
-
     def predict(self, echo_result, ecg_result, clinical_result):
-        """
-        Inputs are binary (0 or 1)
-        1 = disease / abnormal
-        0 = normal
-        """
-
         total = echo_result + ecg_result + clinical_result
 
-        # Simple rule
         if total == 0:
             return "Low"
         elif total == 1:
@@ -23,13 +12,23 @@ class DummyFusion:
         else:
             return "High"
 
+
 if __name__ == "__main__":
+    # Step 1: Create shared memory
+    memory = SharedMemory()
+
+    # Step 2: Simulate module outputs
+    memory.store("echo", {"result": 1})
+    memory.store("ecg", {"result": 0})
+    memory.store("clinical", {"result": 1})
+
+    # Step 3: Retrieve data
+    echo_result = memory.get("echo")["result"]
+    ecg_result = memory.get("ecg")["result"]
+    clinical_result = memory.get("clinical")["result"]
+
+    # Step 4: Apply fusion
     fusion = DummyFusion()
+    final_result = fusion.predict(echo_result, ecg_result, clinical_result)
 
-    result = fusion.predict(
-        echo_result=1,
-        ecg_result=0,
-        clinical_result=1
-    )
-
-    print("Final Risk Level:", result)
+    print("Final Risk Level:", final_result)
