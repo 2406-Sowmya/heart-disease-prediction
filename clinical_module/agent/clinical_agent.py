@@ -187,31 +187,19 @@ def clinical_agent(input_data: dict) -> dict:
     # ── Check model is loaded ──────────────────────────────────
     if _stack_model is None or _scaler is None:
         return {
-            "success"        : False,
-            "source"         : "clinical",
-            "predicted_class": None,
-            "predicted_label": None,
-            "confidence"     : None,
-            "prob_low"       : None,
-            "prob_medium"    : None,
-            "prob_high"      : None,
-            "error"          : "Model files not loaded. Check stack_model.pkl and scaler.pkl."
-        }
+    "level": None,
+    "score": None,
+    "reason": "Model files not loaded"
+  }
 
     # ── Input validation ──────────────────────────────────────
     errors = _validate_input(input_data)
     if errors:
         return {
-            "success"        : False,
-            "source"         : "clinical",
-            "predicted_class": None,
-            "predicted_label": None,
-            "confidence"     : None,
-            "prob_low"       : None,
-            "prob_medium"    : None,
-            "prob_high"      : None,
-            "error"          : " | ".join(errors)
-        }
+    "level": None,
+    "score": None,
+    "reason": " | ".join(errors)
+  }
 
     # ── Build features & scale ────────────────────────────────
     try:
@@ -219,16 +207,10 @@ def clinical_agent(input_data: dict) -> dict:
         scaled = _scaler.transform(df)
     except Exception as e:
         return {
-            "success"        : False,
-            "source"         : "clinical",
-            "predicted_class": None,
-            "predicted_label": None,
-            "confidence"     : None,
-            "prob_low"       : None,
-            "prob_medium"    : None,
-            "prob_high"      : None,
-            "error"          : f"Feature engineering failed: {str(e)}"
-        }
+    "level": None,
+    "score": None,
+    "reason": " | ".join(errors)
+ }
 
     # ── Predict ───────────────────────────────────────────────
     try:
@@ -237,29 +219,33 @@ def clinical_agent(input_data: dict) -> dict:
         pred_class  = LABEL_MAP[pred_label]
         confidence  = float(proba[pred_label])
     except Exception as e:
-        return {
-            "success"        : False,
-            "source"         : "clinical",
-            "predicted_class": None,
-            "predicted_label": None,
-            "confidence"     : None,
-            "prob_low"       : None,
-            "prob_medium"    : None,
-            "prob_high"      : None,
-            "error"          : f"Prediction failed: {str(e)}"
-        }
+       return {
+    "level": None,
+    "score": None,
+    "reason": f"Feature engineering failed: {str(e)}"
+    }
 
     # ── Return standardized output ────────────────────────────
+    level_map = {
+    "Low Risk": "Low",
+    "Medium Risk": "Medium",
+    "High Risk": "High"
+ }
+
+    level = level_map[pred_class]
+
+    # Simple reasoning (Week-7 requirement)
+    if level == "High":
+        reason = "High blood pressure and cholesterol levels detected"
+    elif level == "Medium":
+        reason = "Moderate risk due to clinical indicators"
+    else:
+        reason = "No major clinical risk factors detected"
+
     return {
-        "success"        : True,
-        "source"         : "clinical",          # fusion uses this to identify the module
-        "predicted_class": pred_class,
-        "predicted_label": pred_label,
-        "confidence"     : round(confidence, 6),
-        "prob_low"       : round(float(proba[0]), 6),
-        "prob_medium"    : round(float(proba[1]), 6),
-        "prob_high"      : round(float(proba[2]), 6),
-        "error"          : None
+        "level": level,
+        "score": round(confidence, 6),
+        "reason": reason
     }
 
 # ── 6. BATCH AGENT (optional — for testing multiple patients at once) ─────────

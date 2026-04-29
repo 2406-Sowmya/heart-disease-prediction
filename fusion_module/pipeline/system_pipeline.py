@@ -98,8 +98,8 @@ print(f"Score : {result['ecg'].get('score')}")
 print("NOTE: This is Using simulated ECG signal (real input can be added later)")
 
 print("\n[Clinical Agent]")
-print(f"Level : {result['clinical'].get('predicted_class')}")
-print(f"Confidence : {result['clinical'].get('confidence')}")
+print(f"Level : {result['clinical'].get('level')}")
+print(f"Confidence : {result['clinical'].get('score')}")
 
 print("\n===== FINAL RESULT =====")
 
@@ -108,8 +108,12 @@ print(f"Risk Percentage : {result['fusion']['risk_percentage']} %")
 
 print("\n===== EXPLANATION =====")
 
-print(f"Reason          : {result['rag']['reason']}")
-print(f"Recommendation  : {result['rag']['recommendation']}")
+print("Summary:")
+print(result["rag"]["explanation"])
+
+print("\nDetails:")
+for item in result["rag"]["details"]:
+    print("-", item)
 
 
 

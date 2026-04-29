@@ -187,7 +187,19 @@ def _predict_from_ef(ef_value):
     else:
         level, score = "High",   0.85
 
-    return _build_output(level, score, source="real")
+    reason_map = {
+    "Low": "Normal cardiac structure observed",
+    "Medium": "Moderate structural abnormality detected",
+    "High": "Severe cardiac dysfunction detected"
+ }
+
+    return {
+        "level": level,
+        "score": round(score, 4),
+        "source": "real",
+        "reason": reason_map.get(level, "Echo analysis inconclusive"),
+        "error": None
+    }
 
 
 # ── Standalone test ────────────────────────────────────────────────────────

@@ -1,25 +1,27 @@
+from fusion_module.rag.retriever import retrieve_insights
+from fusion_module.rag.rules_engine import apply_rules
+
+
 def generate_explanation(fusion_output, echo, ecg, clinical):
     """
-    Generates simple explanation based on fusion result
+    Advanced RAG generator
     """
 
-    level = fusion_output["final_level"]
+    # 🔹 Step 1: Retrieve insights
+    insights = retrieve_insights(echo, ecg, clinical)
 
-    # 🔹 Basic reasoning rules
-    if level == "High":
-        reason = "High risk due to abnormal patterns in one or more modules"
-        recommendation = "Consult a cardiologist immediately"
+    # 🔹 Step 2: Apply rules
+    rules = apply_rules(echo, ecg, clinical, fusion_output)
 
-    elif level == "Medium":
-        reason = "Moderate risk due to mixed signals from ECG, Echo or clinical data"
-        recommendation = "Regular monitoring and lifestyle changes advised"
+    final_level = fusion_output["final_level"]
+    risk_percentage = fusion_output["risk_percentage"]
 
-    else:
-        reason = "Low risk as no major abnormalities detected"
-        recommendation = "Maintain healthy lifestyle"
-
-    return {
-        "risk": level,
-        "reason": reason,
-        "recommendation": recommendation
+    # 🔹 Step 3: Build final explanation
+    explanation = {
+        "final_level": final_level,
+        "risk_percentage": risk_percentage,
+        "explanation": rules["summary"],
+        "details": rules["details"]
     }
+
+    return explanation
