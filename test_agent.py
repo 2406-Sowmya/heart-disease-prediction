@@ -24,7 +24,7 @@ def run_realtime_demo(agent: ECGAgent, signal) -> dict:
 
 
 def main() -> None:
-    model_path = Path(__file__).resolve().parent / "model" / "ecg_attention_calibrated.pth"
+    model_path = Path(__file__).resolve().parent / "models" / "ecg_attention_calibrated.pth"
     agent = ECGAgent(model_path=model_path)
 
     simulated_signal = simulate_ecg_input(

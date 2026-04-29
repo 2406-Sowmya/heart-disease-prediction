@@ -8,12 +8,12 @@ from typing import Any, Dict, Optional, Union
 import numpy as np
 import torch
 
-from ecg_module.model.ecg_model_loader import ECGModelLoader
+from ecg_module.models.ecg_model_loader import ECGModelLoader
 from ecg_module.utils.preprocessing import coerce_ecg_array, prepare_ecg_tensor
 
 
 DEFAULT_MODEL_PATH = (
-    Path(__file__).resolve().parent.parent / "model" / "ecg_attention_calibrated.pth"
+    Path(__file__).resolve().parent.parent / "models" / "ecg_attention_calibrated.pth"
 )
 DEFAULT_NUM_LEADS = 12
 DEFAULT_TARGET_LENGTH = 1000
