@@ -2,7 +2,14 @@ def generate_recommendations(patient):
 
     recommendations = []
 
-    if patient.systolic_bp > 140:
+    systolic_bp = patient.systolic_bp or 120
+    cholesterol = patient.cholesterol or 200
+    glucose = patient.glucose or 100
+    bmi = patient.bmi or 25
+    smoking_status = patient.smoking_status or False
+    exercise_level = patient.exercise_level or "Moderate"
+
+    if systolic_bp > 140:
 
         recommendations.append(
 
@@ -10,7 +17,7 @@ def generate_recommendations(patient):
 
         )
 
-    if patient.cholesterol > 240:
+    if cholesterol > 240:
 
         recommendations.append(
 
@@ -18,7 +25,7 @@ def generate_recommendations(patient):
 
         )
 
-    if patient.glucose > 140:
+    if glucose > 140:
 
         recommendations.append(
 
@@ -26,7 +33,7 @@ def generate_recommendations(patient):
 
         )
 
-    if patient.bmi > 30:
+    if bmi > 30:
 
         recommendations.append(
 
@@ -34,7 +41,7 @@ def generate_recommendations(patient):
 
         )
 
-    if patient.smoking_status:
+    if smoking_status:
 
         recommendations.append(
 
@@ -42,7 +49,7 @@ def generate_recommendations(patient):
 
         )
 
-    if patient.exercise_level == "Low":
+    if exercise_level == "Low":
 
         recommendations.append(
 
