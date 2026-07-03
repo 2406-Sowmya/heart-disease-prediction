@@ -17,4 +17,8 @@ def simulate(patient: PatientProfile):
         patient.diastolic_bp - 10
     )
 
+<<<<<<< HEAD
     return updated
+=======
+    return updated
+>>>>>>> develop

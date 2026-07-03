@@ -65,4 +65,8 @@ class TwinSimulator:
 
             })
 
+<<<<<<< HEAD
         return results
+=======
+        return results
+>>>>>>> develop

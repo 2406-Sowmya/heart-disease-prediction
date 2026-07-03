@@ -61,4 +61,8 @@ print(comparison)
 
 print()
 
+<<<<<<< HEAD
 print(summary)
+=======
+print(summary)
+>>>>>>> develop
