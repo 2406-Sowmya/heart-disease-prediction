@@ -12,4 +12,8 @@ def simulate(patient: PatientProfile):
         patient.cholesterol - 30
     )
 
+<<<<<<< HEAD
     return updated
+=======
+    return updated
+>>>>>>> develop
